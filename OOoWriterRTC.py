@@ -102,7 +102,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     self._d_m_wsScreen = RTC.TimedShort(RTC.Time(0,0),0)
     self._m_wsScreenIn = OpenRTM_aist.InPort("wsScreen", self._d_m_wsScreen)
 
-    self._d_m_color = RTC.TimedShortSeq(RTC.Time(0,0),[])
+    self._d_m_color = RTC.TimedRGBColour(RTC.Time(0,0),RTC.RGBColour(0,0,0))
     self._m_colorIn = OpenRTM_aist.InPort("color", self._d_m_color)
 
     self._d_m_selWord = RTC.TimedString(RTC.Time(0,0),0)
