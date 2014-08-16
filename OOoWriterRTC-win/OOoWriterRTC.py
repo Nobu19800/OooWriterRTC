@@ -9,7 +9,10 @@ import commands
 import math
 
 
-sys.path += ['C:\\Python26\\lib\\site-packages', 'C:\\Python26\\lib\\site-packages\\rtctree\\rtmidl']
+if os.name == 'posix':
+    sys.path += ['/usr/lib/python2.6/dist-packages', '/usr/lib/python2.6/dist-packages/rtctree/rtmidl']
+elif os.name == 'nt':
+    sys.path += ['C:\\Python26\\lib\\site-packages', 'C:\\Python26\\lib\\site-packages\\rtctree\\rtmidl']
 
 import time
 import random
@@ -57,7 +60,7 @@ imp_id = "OOoWriterControl"# + str(comp_num)
 ooowritercontrol_spec = ["implementation_id", imp_id,
                   "type_name",         imp_id,
                   "description",       "Openoffice Writer Component",
-                  "version",           "0.0.1",
+                  "version",           "0.1",
                   "vendor",            "Miyamoto Nobuhiko",
                   "category",          "example",
                   "activity_type",     "DataFlowComponent",
@@ -476,7 +479,6 @@ class OOoWriter(Bridge):
   @property
   def document(self): return self._document
   
-
 
 
     
