@@ -1,4 +1,4 @@
-# -*- coding: cp932 -*-
+# -*- coding: utf-8 -*-
 
 import optparse
 import sys,os,platform
@@ -69,11 +69,15 @@ ooowritercontrol_spec = ["implementation_id", imp_id,
                   "lang_type",         "script",
                   ""]
 
-
+def SetCoding(m_str):
+    if os.name == 'posix':
+        return m_str
+    elif os.name == 'nt':
+        return m_str.decode('utf-8').encode('cp932')
 
 
 ##
-# OpenOffice Writer‚ğ‘€ì‚·‚é‚½‚ß‚ÌRTC‚ÌƒNƒ‰ƒX
+# OpenOffice Writerã‚’æ“ä½œã™ã‚‹ãŸã‚ã®RTCã®ã‚¯ãƒ©ã‚¹
 ##
 
 class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
@@ -125,21 +129,21 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     return
 
   ##
-  # ÀsüŠú‚ğİ’è‚·‚éŠÖ”
+  # å®Ÿè¡Œå‘¨æœŸã‚’è¨­å®šã™ã‚‹é–¢æ•°
   ##
   def m_setRate(self, rate):
       m_ec = self.get_owned_contexts()
       m_ec[0].set_rate(rate)
 
   ##
-  # Šˆ«‰»‚·‚é‚½‚ß‚ÌŠÖ”
+  # æ´»æ€§åŒ–ã™ã‚‹ãŸã‚ã®é–¢æ•°
   ## 
   def m_activate(self):
       m_ec = self.get_owned_contexts()
       m_ec[0].activate_component(self._objref)
 
   ##
-  # •sŠˆ«‰»‚·‚é‚½‚ß‚ÌŠÖ”
+  # ä¸æ´»æ€§åŒ–ã™ã‚‹ãŸã‚ã®é–¢æ•°
   ##
   def m_deactivate(self):
       m_ec = self.get_owned_contexts()
@@ -149,7 +153,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
 
   ##
-  # ‰Šú‰»ˆ——pƒR[ƒ‹ƒoƒbƒNŠÖ”
+  # åˆæœŸåŒ–å‡¦ç†ç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
   ##
   def onInitialize(self):
     
@@ -173,7 +177,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     return RTC.RTC_OK
 
   ##
-  # •¶š‘‚«‚İ‚ÌŠÖ”
+  # æ–‡å­—æ›¸ãè¾¼ã¿ã®é–¢æ•°
   ##
 
   def SetWord(self, m_str):
@@ -191,7 +195,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
       cursor.collapseToEnd()
 
   ##
-  # ƒJ[ƒ\ƒ‹ˆÊ’u‚Ì•¶šæ“¾‚ÌŠÖ”
+  # ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®æ–‡å­—å–å¾—ã®é–¢æ•°
   ##
 
   def GetWord(self):
@@ -204,7 +208,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
       
 
   ##
-  # •¶š”ˆÚ“®‚·‚éŠÖ”
+  # æ–‡å­—æ•°ç§»å‹•ã™ã‚‹é–¢æ•°
   ##
   def MoveCharacter(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -216,7 +220,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
           cursor.collapseToStart()
           
   ##
-  # ’PŒê”ˆÚ“®‚·‚éŠÖ”
+  # å˜èªæ•°ç§»å‹•ã™ã‚‹é–¢æ•°
   ##
   def MoveWord(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -229,7 +233,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
               cursor.collapseToStart()
 
   ##
-  # s”ˆÚ“®‚·‚éŠÖ”
+  # è¡Œæ•°ç§»å‹•ã™ã‚‹é–¢æ•°
   ##
   def MoveLine(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -241,7 +245,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
           cursor.collapseToStart()
 
   ##
-  # ’i—”ˆÚ“®‚·‚éŠÖ”
+  # æ®µè½æ•°ç§»å‹•ã™ã‚‹é–¢æ•°
   ##
   def MoveParagraph(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -257,7 +261,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   
 
   ##
-  # üŠúˆ——pƒR[ƒ‹ƒoƒbƒNŠÖ”
+  # å‘¨æœŸå‡¦ç†ç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
   ##
   
   def onExecute(self, ec_id):
@@ -302,7 +306,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     return RTC.RTC_OK
 
   ##
-  # I—¹ˆ——pƒR[ƒ‹ƒoƒbƒNŠÖ”
+  # çµ‚äº†å‡¦ç†ç”¨ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
   ##
   
   def on_shutdown(self, ec_id):
@@ -312,7 +316,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
 
 ##
-# ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğŠˆ«‰»‚µ‚ÄWriter‚Ì‘€ì‚ğŠJn‚·‚éŠÖ”
+# ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’æ´»æ€§åŒ–ã—ã¦Writerã®æ“ä½œã‚’é–‹å§‹ã™ã‚‹é–¢æ•°
 ##
 
 def Start():
@@ -321,7 +325,7 @@ def Start():
         OOoRTC.writer_comp.m_activate()
 
 ##
-# ƒRƒ“ƒ|[ƒlƒ“ƒg‚ğ•sŠˆ«‰»‚µ‚ÄWriter‚Ì‘€ì‚ğI—¹‚·‚éŠÖ”
+# ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’ä¸æ´»æ€§åŒ–ã—ã¦Writerã®æ“ä½œã‚’çµ‚äº†ã™ã‚‹é–¢æ•°
 ##
 
 def Stop():
@@ -331,7 +335,7 @@ def Stop():
 
 
 ##
-# ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌÀsüŠú‚ğİ’è‚·‚éŠÖ”
+# ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å®Ÿè¡Œå‘¨æœŸã‚’è¨­å®šã™ã‚‹é–¢æ•°
 ##
 
 def Set_Rate():
@@ -374,7 +378,7 @@ def Set_Rate():
 
 
 ##
-#RTC‚ğƒ}ƒl[ƒWƒƒ‚É“o˜^‚·‚éŠÖ”
+#RTCã‚’ãƒãƒãƒ¼ã‚¸ãƒ£ã«ç™»éŒ²ã™ã‚‹é–¢æ•°
 ##
 def OOoWriterControlInit(manager):
   profile = OpenRTM_aist.Properties(defaults_str=ooowritercontrol_spec)
@@ -398,7 +402,7 @@ def MyModuleInit(manager):
           
 
 ##
-# RTC‹N“®‚ÌŠÖ”
+# RTCèµ·å‹•ã®é–¢æ•°
 ##
 
 def createOOoWriterComp():
@@ -420,7 +424,7 @@ def createOOoWriterComp():
       return
 
     
-    MyMsgBox('',u'RTC‚ğ‹N“®‚µ‚Ü‚µ‚½')
+    MyMsgBox('',SetCoding('RTCã‚’èµ·å‹•ã—ã¾ã—ãŸ'))
 
 
     
@@ -431,9 +435,9 @@ def createOOoWriterComp():
 
 
 ##
-# ƒƒbƒZ[ƒWƒ{ƒbƒNƒX•\¦‚ÌŠÖ”
-# titleFƒEƒCƒ“ƒhƒE‚Ìƒ^ƒCƒgƒ‹
-# messageF•\¦‚·‚é•¶Í
+# ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãƒœãƒƒã‚¯ã‚¹è¡¨ç¤ºã®é–¢æ•°
+# titleï¼šã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ã‚¿ã‚¤ãƒˆãƒ«
+# messageï¼šè¡¨ç¤ºã™ã‚‹æ–‡ç« 
 ##
 
 def MyMsgBox(title, message):
@@ -445,7 +449,7 @@ def MyMsgBox(title, message):
 
 
 ##
-# OpenOffice‚ğ‘€ì‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
+# OpenOfficeã‚’æ“ä½œã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 ##
 
 class Bridge(object):
@@ -465,20 +469,21 @@ class Bridge(object):
 
 
 ##
-# OpenOffice Writer‚ğ‘€ì‚·‚é‚½‚ß‚ÌƒNƒ‰ƒX
+# OpenOffice Writerã‚’æ“ä½œã™ã‚‹ãŸã‚ã®ã‚¯ãƒ©ã‚¹
 ##
 
 class OOoWriter(Bridge):
   def __init__(self):
     Bridge.__init__(self)
     if not self._document.supportsService('com.sun.star.text.TextDocument'):
-      self.run_errordialog(title='ƒGƒ‰[', message='‚±‚Ìƒ}ƒNƒ‚ÍOpenOffice.org Writer‚Ì’†‚ÅÀs‚µ‚Ä‚­‚¾‚³‚¢')
+      self.run_errordialog(title='ã‚¨ãƒ©ãƒ¼', message='ã“ã®ãƒã‚¯ãƒ­ã¯OpenOffice.org Writerã®ä¸­ã§å®Ÿè¡Œã—ã¦ãã ã•ã„')
       raise NotOOoWriterException()
     self.__current_controller = self._document.CurrentController
     
   @property
   def document(self): return self._document
   
+
 
 
     
