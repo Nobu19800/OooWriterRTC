@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<seatml>
+  <general name="sample">
+    <agent name="speechin" type="rtcin" datatype="TimedString" />
+    <agent name="speechout" type="rtcout" datatype="TimedString" />
+    <agent name="commandout" type="rtcout" datatype="TimedBoolean" />
+  </general>
+  <state name="OPEN">
+    <rule>
+      <key>これは</key>
+      <command host="commandout">0</command>
+      <command host="speechout">これは</command>
+    </rule>
+    <rule>
+      <key>OpenOffice Writer</key>
+      <command host="commandout">1</command>
+      <command host="speechout">OpenOffice Writer</command>
+    </rule>
+    <rule>
+      <key>を操作するRTCです</key>
+      <command host="commandout">0</command>
+      <command host="speechout">を操作するRTCです</command>
+    </rule>
+  </state>
+</seatml>
