@@ -73,34 +73,46 @@ ooowritercontrol_spec = ["implementation_id", imp_id,
                   "language",          "Python",
                   "lang_type",         "script",
                   "conf.default.fontsize", "16",
-                  "conf.default.fontname", "ＭＳ 明朝",
+                  #"conf.default.fontname", "ＭＳ 明朝",
                   "conf.default.Red", "0",
                   "conf.default.Blue", "0",
                   "conf.default.Green", "0",
                   "conf.default.Italic", "0",
                   "conf.default.Bold", "0",
+                  "conf.default.Code", "utf-8",
                   "conf.__widget__.fontsize", "spin",
-                  "conf.__widget__.fontname", "radio",
+                  #"conf.__widget__.fontname", "radio",
                   "conf.__widget__.Red", "spin",
                   "conf.__widget__.Blue", "spin",
                   "conf.__widget__.Green", "spin",
                   "conf.__widget__.Italic", "radio",
                   "conf.__widget__.Bold", "radio",
+                  "conf.__widget__.Code", "radio",
                   "conf.__constraints__.fontsize", "1<=x<=72",
-                  "conf.__constraints__.fontname", "(MS UI Gothic,MS ゴシック,MS Pゴシック,MS 明朝,MS P明朝,HG ゴシック E,HGP ゴシック E,HGS ゴシック E,HG ゴシック M,HGP ゴシック M,HGS ゴシック M,HG 正楷書体-PRO,HG 丸ゴシック M-PRO,HG 教科書体,HGP 教科書体,HGS 教科書体,HG 行書体,HGP 行書体,HGS 行書体,HG 創英プレゼンス EB,HGP 創英プレゼンス EB,HGS 創英プレゼンス EB,HG 創英角ゴシック UB,HGP 創英角ゴシック UB,HGS 創英角ゴシック UB,HG 創英角ポップ体,HGP 創英角ポップ体,HGS 創英角ポップ体,HG 明朝 B,HGP 明朝 B,HGS 明朝 B,HG 明朝 E,HGP 明朝 E,HGS 明朝 E,メイリオ)",
+                  #"conf.__constraints__.fontname", "(MS UI Gothic,MS ゴシック,MS Pゴシック,MS 明朝,MS P明朝,HG ゴシック E,HGP ゴシック E,HGS ゴシック E,HG ゴシック M,HGP ゴシック M,HGS ゴシック M,HG 正楷書体-PRO,HG 丸ゴシック M-PRO,HG 教科書体,HGP 教科書体,HGS 教科書体,HG 行書体,HGP 行書体,HGS 行書体,HG 創英プレゼンス EB,HGP 創英プレゼンス EB,HGS 創英プレゼンス EB,HG 創英角ゴシック UB,HGP 創英角ゴシック UB,HGS 創英角ゴシック UB,HG 創英角ポップ体,HGP 創英角ポップ体,HGS 創英角ポップ体,HG 明朝 B,HGP 明朝 B,HGS 明朝 B,HG 明朝 E,HGP 明朝 E,HGS 明朝 E,メイリオ)",
                   "conf.__constraints__.Red", "0<=x<=255",
                   "conf.__constraints__.Blue", "0<=x<=255",
                   "conf.__constraints__.Green", "0<=x<=255",
                   "conf.__constraints__.Italic", "(0,1)",
                   "conf.__constraints__.Bold", "(0,1)",
+                  "conf.__constraints__.Code", "(utf-8,euc_jp,shift_jis)",
     ""
                   ""]
 
-def SetCoding(m_str):
+def SetCoding(m_str, m_code):
     if os.name == 'posix':
-        return m_str
+        if m_code == "utf-8":
+            return m_str
+        else:
+            try:
+                return m_str.decode(m_code).encode("utf-8")
+            except:
+                return ""
     elif os.name == 'nt':
-        return m_str.decode('utf-8').encode('cp932')
+        try:
+            return m_str.decode(m_code).encode('cp932')
+        except:
+            return ""
 
 def ResetCoding(m_str):
     if os.name == 'posix':
@@ -192,6 +204,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     self.conf_Red = [0]
     self.conf_Green = [0]
     self.conf_Blue = [0]
+    self.conf_Code = ["utf-8"]
     
     
     return
@@ -243,12 +256,13 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     self.addOutPort("copyWord",self._m_copyWordOut)
 
     self.bindParameter("fontsize", self.conf_fontSize, "16")
-    self.bindParameter("fontname", self.conf_fontName, "ＭＳ 明朝")
+    #self.bindParameter("fontname", self.conf_fontName, "ＭＳ 明朝")
     self.bindParameter("Bold", self.conf_Bold, "False")
     self.bindParameter("Italic", self.conf_Italic, "False")
     self.bindParameter("Red", self.conf_Red, "0")
     self.bindParameter("Blue", self.conf_Green, "0")
     self.bindParameter("Green", self.conf_Blue, "0")
+    self.bindParameter("Code", self.conf_Code, "utf-8")
 
     
     
@@ -262,7 +276,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   def SetWord(self, m_str):
       cursor = self.writer.document.getCurrentController().getViewCursor()
 
-      inp_str = SetCoding(m_str)
+      inp_str = SetCoding(m_str, self.conf_Code[0])
       cursor.setString(inp_str)
       
       cursor.CharHeight = self.fontSize
@@ -577,7 +591,7 @@ def createOOoWriterComp():
       return
 
     
-    MyMsgBox('',SetCoding('RTCを起動しました'))
+    MyMsgBox('',SetCoding('RTCを起動しました','utf-8'))
 
 
     
