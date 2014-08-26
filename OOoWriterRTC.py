@@ -102,6 +102,18 @@ def SetCoding(m_str):
     elif os.name == 'nt':
         return m_str.decode('utf-8').encode('cp932')
 
+def ResetCoding(m_str):
+    if os.name == 'posix':
+        return m_str.encode('utf-8')
+    elif os.name == 'nt':
+        return m_str.encode('cp932')
+
+
+
+
+
+
+
 
 ##
 # OpenOffice Writerを操作するためのRTCのクラス
@@ -250,7 +262,8 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   def SetWord(self, m_str):
       cursor = self.writer.document.getCurrentController().getViewCursor()
 
-      cursor.setString(m_str)
+      inp_str = SetCoding(m_str)
+      cursor.setString(inp_str)
       
       cursor.CharHeight = self.fontSize
       cursor.CharHeightAsian = self.fontSize
@@ -275,7 +288,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
       
       
 
-      cursor.goRight(len(m_str),False)
+      cursor.goRight(len(inp_str),False)
 
       cursor.collapseToEnd()
 
@@ -285,8 +298,14 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   def GetWord(self):
       cursor = self.writer.document.getCurrentController().getViewCursor()
+
+      try:
+          out_str = ResetCoding(cursor.getString())
+          return out_str
+      except:
+          return ""
        
-      return str(cursor.getString())
+      
 
   
       
@@ -377,9 +396,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   ##
   
   def onExecute(self, ec_id):
-    if self._m_wordIn.isNew():
-        data = self._m_wordIn.read()
-        self.SetWord(data.data)
+    
 
     if self._m_fontSizeIn.isNew():
         data = self._m_fontSizeIn.read()
@@ -429,6 +446,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     if self._m_MovementTypeIn.isNew():
         data = self._m_MovementTypeIn.read()
         self.MovementType = data.data
+
+    if self._m_wordIn.isNew():
+        data = self._m_wordIn.read()
+        self.SetWord(data.data)
 
     
     self._d_m_selWord.data = str(self.GetWord())
