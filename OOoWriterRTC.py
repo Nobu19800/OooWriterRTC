@@ -205,6 +205,8 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     self.conf_Green = [0]
     self.conf_Blue = [0]
     self.conf_Code = ["utf-8"]
+
+    self.file = None
     
     
     return
@@ -402,8 +404,14 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     self.Red = int(self.conf_Red[0])
     self.Green = int(self.conf_Green[0])
     self.Blue = int(self.conf_Blue[0])
+
+    #self.file = open('text3.txt', 'w')
     
-    return RTC.RTC_OK   
+    return RTC.RTC_OK
+
+  def onDeactivated(self, ec_id):
+    #self.file.close()
+    return RTC.RTC_OK
 
   ##
   # 周期処理用コールバック関数
@@ -415,6 +423,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     if self._m_fontSizeIn.isNew():
         data = self._m_fontSizeIn.read()
         self.fontSize = data.data
+
+    if self._m_MovementTypeIn.isNew():
+        data = self._m_MovementTypeIn.read()
+        self.MovementType = data.data
 
     if self._m_wsCharacterIn.isNew():
         data = self._m_wsCharacterIn.read()
@@ -457,13 +469,15 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
         data = self._m_BoldIn.read()
         self.Bold = data.data
 
-    if self._m_MovementTypeIn.isNew():
-        data = self._m_MovementTypeIn.read()
-        self.MovementType = data.data
+    
 
     if self._m_wordIn.isNew():
         data = self._m_wordIn.read()
+        
+        #t1_ = OpenRTM_aist.Time()
         self.SetWord(data.data)
+        #t2_ = OpenRTM_aist.Time()
+        #self.file.write(str((t2_-t1_).getTime().toDouble())+"\n")
 
     
     self._d_m_selWord.data = str(self.GetWord())
