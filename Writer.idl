@@ -1,0 +1,12 @@
+module Writer {
+	interface mWriter
+	{
+		float oCurrentCursorPositionX();
+		float oCurrentCursorPositionY();
+		void gotoStart();
+		void gotoEnd();
+		void gotoStartOfLine();
+		void gotoEndOfLine();
+		
+	};
+};
