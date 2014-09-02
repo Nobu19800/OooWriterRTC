@@ -51,7 +51,6 @@ from com.sun.star.awt.FontUnderline import SINGLE as FU_SINGLE
 from com.sun.star.awt.FontUnderline import NONE as FU_NONE
 from com.sun.star.awt.FontStrikeout import SINGLE as FST_SINGLE
 from com.sun.star.awt.FontStrikeout import NONE as FST_NONE
-#from com.sun.star.awt.FontEmphasis import DOT_ABOVE
 #from com.sun.star.awt.FontEmphasis import NONE as FE_NONE
 #from com.sun.star.awt.FontRelief import ENGRAVED
 #from com.sun.star.awt.FontRelief import NONE as FR_NONE
@@ -494,10 +493,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
       else:
           cursor.CharStrikeout = FST_NONE
 
-      #if self.Emphasis:
-      #    cursor.CharEmphasis = DOT_ABOVE
-      #else:
-      #    cursor.CharEmphasis = FE_NONE
+      if self.Emphasis:
+          cursor.CharEmphasis = 1
+      else:
+          cursor.CharEmphasis = 0
 
       cursor.CharShadowed = self.Shadow
 
