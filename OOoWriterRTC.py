@@ -420,7 +420,6 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     self.addInPort("Italic",self._m_ItalicIn)
     self.addInPort("Bold",self._m_BoldIn)
     self.addInPort("Underline",self._m_UnderlineIn)
-    self.addInPort("Bold",self._m_BoldIn)
     self.addInPort("Shadow",self._m_ShadowIn)
     self.addInPort("Strikeout",self._m_StrikeoutIn)
     self.addInPort("Contoured",self._m_ContouredIn)
