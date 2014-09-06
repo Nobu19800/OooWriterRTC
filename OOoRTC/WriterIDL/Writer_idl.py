@@ -35,10 +35,10 @@ omniORB.registerType(mWriter._NP_RepositoryId, _0_Writer._d_mWriter, _0_Writer._
 # mWriter operations and attributes
 mWriter._d_oCurrentCursorPositionX = ((), (omniORB.tcInternal.tv_float, ), None)
 mWriter._d_oCurrentCursorPositionY = ((), (omniORB.tcInternal.tv_float, ), None)
-mWriter._d_gotoStart = ((), (), None)
-mWriter._d_gotoEnd = ((), (), None)
-mWriter._d_gotoStartOfLine = ((), (), None)
-mWriter._d_gotoEndOfLine = ((), (), None)
+mWriter._d_gotoStart = ((omniORB.tcInternal.tv_boolean, ), (), None)
+mWriter._d_gotoEnd = ((omniORB.tcInternal.tv_boolean, ), (), None)
+mWriter._d_gotoStartOfLine = ((omniORB.tcInternal.tv_boolean, ), (), None)
+mWriter._d_gotoEndOfLine = ((omniORB.tcInternal.tv_boolean, ), (), None)
 
 # mWriter object reference
 class _objref_mWriter (CORBA.Object):

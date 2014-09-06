@@ -3,10 +3,10 @@ module Writer {
 	{
 		float oCurrentCursorPositionX();
 		float oCurrentCursorPositionY();
-		void gotoStart();
-		void gotoEnd();
-		void gotoStartOfLine();
-		void gotoEndOfLine();
+		void gotoStart(in boolean sel);
+		void gotoEnd(in boolean sel);
+		void gotoStartOfLine(in boolean sel);
+		void gotoEndOfLine(in boolean sel);
 		
 	};
 };
