@@ -180,36 +180,36 @@ class mWriter_i (Writer__POA.mWriter):
         # Must return: result
 
     # void gotoStart()
-    def gotoStart(self):
+    def gotoStart(self, sel):
         if OOoRTC.writer_comp:
-            OOoRTC.writer_comp.gotoStart()
+            OOoRTC.writer_comp.gotoStart(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
         # Must return: None
 
     # void gotoEnd()
-    def gotoEnd(self):
+    def gotoEnd(self, sel):
         if OOoRTC.writer_comp:
-            OOoRTC.writer_comp.gotoEnd()
+            OOoRTC.writer_comp.gotoEnd(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
         # Must return: None
 
     # void gotoStartOfLine()
-    def gotoStartOfLine(self):
+    def gotoStartOfLine(self, sel):
         if OOoRTC.writer_comp:
-            OOoRTC.writer_comp.gotoStartOfLine()
+            OOoRTC.writer_comp.gotoStartOfLine(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
         # Must return: None
 
     # void gotoEndOfLine()
-    def gotoEndOfLine(self):
+    def gotoEndOfLine(self, sel):
         if OOoRTC.writer_comp:
-            OOoRTC.writer_comp.gotoEndOfLine()
+            OOoRTC.writer_comp.gotoEndOfLine(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
@@ -535,30 +535,30 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   ##
   # カーソルをドキュメントの先頭に移動させる関数
   ##
-  def gotoStart(self):
+  def gotoStart(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
-      cursor.gotoStart(False)
+      cursor.gotoStart(sel)
 
   ##
   # カーソルをドキュメントの最後尾に移動させる関数
   ##
-  def gotoEnd(self):
+  def gotoEnd(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
-      cursor.gotoEnd(False)
+      cursor.gotoEnd(sel)
 
   ##
   # カーソルを行の先頭に移動させる関数
   ##
-  def gotoStartOfLine(self):
+  def gotoStartOfLine(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
-      cursor.gotoStartOfLine(False)
+      cursor.gotoStartOfLine(sel)
 
   ##
   # カーソルの行の最後尾に移動させる関数
   ##
-  def gotoEndOfLine(self):
+  def gotoEndOfLine(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
-      cursor.gotoEndOfLine(False)
+      cursor.gotoEndOfLine(sel)
 
   
   
