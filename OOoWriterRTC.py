@@ -156,37 +156,34 @@ class mWriter_i (Writer__POA.mWriter):
     Example class implementing IDL interface Writer.mWriter
     """
 
-    def __init__(self):
+    def __init__(self, m_comp):
         """
         @brief standard constructor
         Initialise member variables here
         """
-        pass
+        self.m_comp = m_comp
 
     # float oCurrentCursorPositionX()
-    def oCurrentCursorPositionX(self):
-        if OOoRTC.writer_comp:
-            x,y = OOoRTC.writer_comp.oCurrentCursorPosition()
-            return float(x)
-        return 0
+    def oCurrentCursorPositionX(self): 
+        x,y = self.m_comp.oCurrentCursorPosition()
+        return float(x)
+        
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
         # Must return: result
 
     # float oCurrentCursorPositionY()
     def oCurrentCursorPositionY(self):
-        if OOoRTC.writer_comp:
-            x,y = OOoRTC.writer_comp.oCurrentCursorPosition()
-            return float(y)
-        return 0
+        x,y = self.m_comp.oCurrentCursorPosition()
+        return float(y)
+        
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
         # Must return: result
 
     # void gotoStart()
     def gotoStart(self, sel):
-        if OOoRTC.writer_comp:
-            OOoRTC.writer_comp.gotoStart(sel)
+        self.m_comp.gotoStart(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
@@ -194,8 +191,7 @@ class mWriter_i (Writer__POA.mWriter):
 
     # void gotoEnd()
     def gotoEnd(self, sel):
-        if OOoRTC.writer_comp:
-            OOoRTC.writer_comp.gotoEnd(sel)
+        self.m_comp.gotoEnd(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
@@ -203,8 +199,7 @@ class mWriter_i (Writer__POA.mWriter):
 
     # void gotoStartOfLine()
     def gotoStartOfLine(self, sel):
-        if OOoRTC.writer_comp:
-            OOoRTC.writer_comp.gotoStartOfLine(sel)
+        self.m_comp.gotoStartOfLine(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
@@ -212,8 +207,7 @@ class mWriter_i (Writer__POA.mWriter):
 
     # void gotoEndOfLine()
     def gotoEndOfLine(self, sel):
-        if OOoRTC.writer_comp:
-            OOoRTC.writer_comp.gotoEndOfLine(sel)
+        self.m_comp.gotoEndOfLine(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         # *** Implement me
@@ -323,7 +317,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
 
     self._WriterPort = OpenRTM_aist.CorbaPort("Writer")
-    self._writer = mWriter_i()
+    self._writer = mWriter_i(self)
     
 
     try:
