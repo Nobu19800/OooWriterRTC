@@ -147,7 +147,7 @@ ooowritercontrol_spec = ["implementation_id", imp_id,
 
 
 ##
-# サービスポート
+# サービスポートWriter
 ##
 
 class mWriter_i (Writer__POA.mWriter):
@@ -163,72 +163,73 @@ class mWriter_i (Writer__POA.mWriter):
         """
         self.m_comp = m_comp
 
-    # float oCurrentCursorPositionX()
+    ##
+    # 現在のカーソル位置X座標取得(単位はmm)
+    ##
     def oCurrentCursorPositionX(self): 
         x,y = self.m_comp.oCurrentCursorPosition()
         return float(x)
         
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
-        # *** Implement me
-        # Must return: result
+        
 
-    # float oCurrentCursorPositionY()
+    ##
+    # 現在のカーソル位置Y座標取得(単位はmm)
+    ##
     def oCurrentCursorPositionY(self):
         x,y = self.m_comp.oCurrentCursorPosition()
         return float(y)
         
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
-        # *** Implement me
-        # Must return: result
 
-    # void gotoStart()
+    ##
+    # カーソルをドキュメント先頭に移動
+    # sel：Trueなら移動範囲を選択
+    ##
     def gotoStart(self, sel):
         self.m_comp.gotoStart(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
-        # *** Implement me
-        # Must return: None
+        
 
-    # void gotoEnd()
+    ##
+    # カーソルをドキュメント最後尾に移動
+    # sel：Trueなら移動範囲を選択
+    ##
     def gotoEnd(self, sel):
         self.m_comp.gotoEnd(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
-        # *** Implement me
-        # Must return: None
+        
 
-    # void gotoStartOfLine()
+    ##
+    # カーソルを行先頭に移動
+    # sel：Trueなら移動範囲を選択
+    ##
     def gotoStartOfLine(self, sel):
         self.m_comp.gotoStartOfLine(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
-        # *** Implement me
-        # Must return: None
+        
 
-    # void gotoEndOfLine()
+    ##
+    # カーソルを行最後尾に移動
+    # sel：Trueなら移動範囲を選択
+    ##
     def gotoEndOfLine(self, sel):
         self.m_comp.gotoEndOfLine(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
-        # *** Implement me
-        # Must return: None
+        
         
 
-def SetCoding(m_str, m_code):
-    if os.name == 'posix':
-        if m_code == "utf-8":
-            return m_str
-        else:
-            try:
-                return m_str.decode(m_code).encode("utf-8")
-            except:
-                return ""
-    elif os.name == 'nt':
-        try:
-            return m_str.decode(m_code).encode('cp932')
-        except:
-            return ""
 
+
+##
+# ユニコード文字列をドキュメント上で文字化けしない文字コードで文字列を返す
+# m_str：変換前の文字列
+# 戻り値：変換後の文字列
+##
 def ResetCoding(m_str):
     if os.name == 'posix':
         return m_str.encode('utf-8')
@@ -370,6 +371,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # 実行周期を設定する関数
+  # rate：実行周期
   ##
   def m_setRate(self, rate):
       m_ec = self.get_owned_contexts()
@@ -449,12 +451,13 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # 文字書き込みの関数
+  # m_str：書き込む文字列
   ##
 
   def SetWord(self, m_str):
       cursor = self.writer.document.getCurrentController().getViewCursor()
 
-      inp_str = SetCoding(m_str, self.conf_Code[0])
+      inp_str = OOoRTC.SetCoding(m_str, self.conf_Code[0])
       cursor.setString(inp_str)
       
       cursor.CharHeight = self.fontSize
@@ -500,8 +503,8 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
       #cursor.CharStyleName = self.fontName
 
-      cursor.CharColor = RGB(self.Char_Red,self.Char_Green,self.Char_Blue)
-      cursor.CharBackColor = RGB(self.Back_Red,self.Back_Green,self.Back_Blue)
+      cursor.CharColor = OOoRTC.RGB(self.Char_Red,self.Char_Green,self.Char_Blue)
+      cursor.CharBackColor = OOoRTC.RGB(self.Back_Red,self.Back_Green,self.Back_Blue)
 
       cursor.goRight(len(inp_str),False)
 
@@ -509,6 +512,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # カーソル位置の文字取得の関数
+  # 戻り値：カーソル位置の文字列
   ##
 
   def GetWord(self):
@@ -523,7 +527,8 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
       
 
   ##
-  # カーソルの位置か取得する関数
+  # カーソルの位置を取得する関数
+  # 戻り値：カーソル位置のX座標、Y座標(単位はmm)
   ##
   def oCurrentCursorPosition(self):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -532,6 +537,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # カーソルをドキュメントの先頭に移動させる関数
+  # sel：Trueならば移動範囲を選択
   ##
   def gotoStart(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -539,6 +545,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # カーソルをドキュメントの最後尾に移動させる関数
+  # sel：Trueならば移動範囲を選択
   ##
   def gotoEnd(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -546,6 +553,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # カーソルを行の先頭に移動させる関数
+  # sel：Trueならば移動範囲を選択
   ##
   def gotoStartOfLine(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -553,6 +561,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # カーソルの行の最後尾に移動させる関数
+  # sel：Trueならば移動範囲を選択
   ##
   def gotoEndOfLine(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -565,6 +574,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # 文字数移動する関数
+  # diff：移動する文字数
   ##
   def MoveCharacter(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -579,6 +589,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
           
   ##
   # 単語数移動する関数
+  # diff：移動する単語数
   ##
   def MoveWord(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -594,6 +605,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # 行数移動する関数
+  # diff：移動する行数
   ##
   def MoveLine(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -608,6 +620,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # 段落数移動する関数
+  # diff：移動する段落数
   ##
   def MoveParagraph(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -865,26 +878,7 @@ def MyModuleInit(manager):
 
 
 
-##
-# 文字、背景色の色の値を返すクラス
-# red、green、blue：各色(0～255)
-##
 
-def RGB (red, green, blue):
-    
-    if red > 0xff:
-      red = 0xff
-    elif red < 0:
-      red = 0
-    if green > 0xff:
-      green = 0xff
-    elif green < 0:
-      green = 0
-    if blue > 0xff:
-      blue = 0xff
-    elif blue < 0:
-      blue = 0
-    return red * 0x010000 + green * 0x000100 + blue * 0x000001
 
 
           
@@ -912,7 +906,7 @@ def createOOoWriterComp():
       return
 
     
-    MyMsgBox('',SetCoding('RTCを起動しました','utf-8'))
+    MyMsgBox('',OOoRTC.SetCoding('RTCを起動しました','utf-8'))
 
 
     
