@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+##
+#
+# @file OOoWriterRTC.py
+
 import optparse
 import sys,os,platform
 import re
@@ -146,26 +150,26 @@ ooowritercontrol_spec = ["implementation_id", imp_id,
                   ""]
 
 
-##
-# サービスポートWriter
-##
 
+##
+# @class mWriter_i
+# @brief サービスポートWriter
+#
 class mWriter_i (Writer__POA.mWriter):
-    """
-    @class mWriter_i
-    Example class implementing IDL interface Writer.mWriter
-    """
 
+    ##
+    # @brief コンストラクタ
+    # @param self
+    # @param m_comp OOoWriterRTC
+    #
     def __init__(self, m_comp):
-        """
-        @brief standard constructor
-        Initialise member variables here
-        """
         self.m_comp = m_comp
 
     ##
-    # 現在のカーソル位置X座標取得(単位はmm)
-    ##
+    # @brief 現在のカーソル位置X座標取得(単位はmm)
+    # @param self
+    # @return カーソル位置X座標
+    #
     def oCurrentCursorPositionX(self): 
         x,y = self.m_comp.oCurrentCursorPosition()
         return float(x)
@@ -174,8 +178,10 @@ class mWriter_i (Writer__POA.mWriter):
         
 
     ##
-    # 現在のカーソル位置Y座標取得(単位はmm)
-    ##
+    # @brief 現在のカーソル位置Y座標取得(単位はmm)
+    # @param self
+    # @return カーソル位置Y座標
+    #
     def oCurrentCursorPositionY(self):
         x,y = self.m_comp.oCurrentCursorPosition()
         return float(y)
@@ -183,39 +189,46 @@ class mWriter_i (Writer__POA.mWriter):
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
 
     ##
-    # カーソルをドキュメント先頭に移動
-    # sel：Trueなら移動範囲を選択
-    ##
+    # @brief カーソルをドキュメント先頭に移動
+    # @param self
+    # @param sel Trueなら移動範囲を選択
+    #
     def gotoStart(self, sel):
         self.m_comp.gotoStart(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         
 
+    
     ##
-    # カーソルをドキュメント最後尾に移動
-    # sel：Trueなら移動範囲を選択
-    ##
+    # @brief カーソルをドキュメント最後尾に移動
+    # @param self
+    # @param sel Trueなら移動範囲を選択
+    #
     def gotoEnd(self, sel):
         self.m_comp.gotoEnd(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         
 
+    
     ##
-    # カーソルを行先頭に移動
-    # sel：Trueなら移動範囲を選択
-    ##
+    # @brief カーソルを行先頭に移動
+    # @param self
+    # @param sel Trueなら移動範囲を選択
+    #
     def gotoStartOfLine(self, sel):
         self.m_comp.gotoStartOfLine(sel)
         return
         raise CORBA.NO_IMPLEMENT(0, CORBA.COMPLETED_NO)
         
 
+    
     ##
-    # カーソルを行最後尾に移動
-    # sel：Trueなら移動範囲を選択
-    ##
+    # @brief カーソルを行最後尾に移動
+    # @param self
+    # @param sel Trueなら移動範囲を選択
+    #
     def gotoEndOfLine(self, sel):
         self.m_comp.gotoEndOfLine(sel)
         return
@@ -226,10 +239,10 @@ class mWriter_i (Writer__POA.mWriter):
 
 
 ##
-# ユニコード文字列をドキュメント上で文字化けしない文字コードで文字列を返す
-# m_str：変換前の文字列
-# 戻り値：変換後の文字列
-##
+# @brief ユニコード文字列をドキュメント上で文字化けしない文字コードで文字列を返す
+# @param m_str 変換前の文字列
+# @return 変換後の文字列
+#
 def ResetCoding(m_str):
     if os.name == 'posix':
         return m_str.encode('utf-8')
@@ -244,8 +257,9 @@ def ResetCoding(m_str):
 
 
 ##
-# OpenOffice Writerを操作するためのRTCのクラス
-##
+# @class OOoWriterControl
+# @brief OpenOffice Writerを操作するためのRTCのクラス
+#
 
 class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   def __init__(self, manager):
@@ -370,23 +384,27 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     return
 
   ##
-  # 実行周期を設定する関数
-  # rate：実行周期
-  ##
+  # @brief 実行周期を設定する関数
+  # @param self
+  # @param rate：実行周期
+  #
+  
   def m_setRate(self, rate):
       m_ec = self.get_owned_contexts()
       m_ec[0].set_rate(rate)
 
   ##
-  # 活性化するための関数
-  ## 
+  # @brief 活性化するための関数
+  # @param self
+  #
   def m_activate(self):
       m_ec = self.get_owned_contexts()
       m_ec[0].activate_component(self._objref)
 
   ##
-  # 不活性化するための関数
-  ##
+  # @brief 不活性化するための関数
+  # @param self
+  #
   def m_deactivate(self):
       m_ec = self.get_owned_contexts()
       m_ec[0].deactivate_component(self._objref)
@@ -395,8 +413,9 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
 
   ##
-  # 初期化処理用コールバック関数
-  ##
+  # @brief 初期化処理用コールバック関数
+  # @param self
+  #
   def onInitialize(self):
     
     OOoRTC.writer_comp = self
@@ -450,9 +469,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     return RTC.RTC_OK
 
   ##
-  # 文字書き込みの関数
-  # m_str：書き込む文字列
-  ##
+  # @brief 文字書き込みの関数
+  # @param self
+  # @param m_str 書き込む文字列
+  #
 
   def SetWord(self, m_str):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -511,9 +531,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
       cursor.collapseToEnd()
 
   ##
-  # カーソル位置の文字取得の関数
-  # 戻り値：カーソル位置の文字列
-  ##
+  # @brief カーソル位置の文字取得の関数
+  # @param self
+  # @return カーソル位置の文字列
+  #
 
   def GetWord(self):
       cursor = self.writer.document.getCurrentController().getViewCursor()
@@ -527,42 +548,47 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
       
 
   ##
-  # カーソルの位置を取得する関数
-  # 戻り値：カーソル位置のX座標、Y座標(単位はmm)
-  ##
+  # @brief カーソルの位置を取得する関数
+  # @param self
+  # @return カーソル位置のX座標、Y座標(単位はmm)
+  #
   def oCurrentCursorPosition(self):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       oCurPos = cursor.getPosition()
       return oCurPos.X, oCurPos.Y
 
   ##
-  # カーソルをドキュメントの先頭に移動させる関数
-  # sel：Trueならば移動範囲を選択
-  ##
+  # @brief カーソルをドキュメントの先頭に移動させる関数
+  # @param self
+  # @param sel Trueならば移動範囲を選択
+  #
   def gotoStart(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       cursor.gotoStart(sel)
 
   ##
-  # カーソルをドキュメントの最後尾に移動させる関数
-  # sel：Trueならば移動範囲を選択
-  ##
+  # @brief カーソルをドキュメントの最後尾に移動させる関数
+  # @param self
+  # @param sel Trueならば移動範囲を選択
+  #
   def gotoEnd(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       cursor.gotoEnd(sel)
 
   ##
-  # カーソルを行の先頭に移動させる関数
-  # sel：Trueならば移動範囲を選択
-  ##
+  # @brief カーソルを行の先頭に移動させる関数
+  # @param self
+  # @param sel Trueならば移動範囲を選択
+  #
   def gotoStartOfLine(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       cursor.gotoStartOfLine(sel)
 
   ##
-  # カーソルの行の最後尾に移動させる関数
-  # sel：Trueならば移動範囲を選択
-  ##
+  # @brief カーソルの行の最後尾に移動させる関数
+  # @param self
+  # @param sel Trueならば移動範囲を選択
+  #
   def gotoEndOfLine(self, sel):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       cursor.gotoEndOfLine(sel)
@@ -573,9 +599,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
       
 
   ##
-  # 文字数移動する関数
-  # diff：移動する文字数
-  ##
+  # @brief 文字数移動する関数
+  # @param self
+  # @param diff 移動する文字数
+  #
   def MoveCharacter(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       if diff > 0:
@@ -588,9 +615,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
               cursor.collapseToStart()
           
   ##
-  # 単語数移動する関数
-  # diff：移動する単語数
-  ##
+  # @brief 単語数移動する関数
+  # @param self
+  # @param diff 移動する単語数
+  #
   def MoveWord(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       for i in range(0, diff):
@@ -604,9 +632,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
                   cursor.collapseToStart()
 
   ##
-  # 行数移動する関数
-  # diff：移動する行数
-  ##
+  # @brief 行数移動する関数
+  # @param self
+  # @param diff 移動する行数
+  #
   def MoveLine(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       if diff > 0:
@@ -619,9 +648,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
               cursor.collapseToStart()
 
   ##
-  # 段落数移動する関数
-  # diff：移動する段落数
-  ##
+  # @brief 段落数移動する関数
+  # @param self
+  # @param diff 移動する段落数
+  #
   def MoveParagraph(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       for i in range(0, diff):
@@ -636,8 +666,10 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
 
   ##
-  # 活性化処理用コールバック関数
-  ##
+  # @brief 活性化処理用コールバック関数
+  # @param self
+  # @param ec_id
+  #
   
   def onActivated(self, ec_id):
     self.fontSize = float(self.conf_fontSize[0])
@@ -687,9 +719,12 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     #self.file.close()
     return RTC.RTC_OK
 
+  
   ##
-  # 周期処理用コールバック関数
-  ##
+  # @brief 周期処理用コールバック関数
+  # @param self
+  # @param ec_id
+  #
   
   def onExecute(self, ec_id):
     
@@ -787,9 +822,12 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
     return RTC.RTC_OK
 
+  
   ##
-  # 終了処理用コールバック関数
-  ##
+  # @brief 終了処理用コールバック関数
+  # @param self
+  # @param ec_id
+  #
   
   def on_shutdown(self, ec_id):
       OOoRTC.writer_comp = None
@@ -798,8 +836,8 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
 
 ##
-# コンポーネントを活性化してWriterの操作を開始する関数
-##
+# @brief コンポーネントを活性化してWriterの操作を開始する関数
+#
 
 def Start():
     
@@ -807,8 +845,8 @@ def Start():
         OOoRTC.writer_comp.m_activate()
 
 ##
-# コンポーネントを不活性化してWriterの操作を終了する関数
-##
+# @brief コンポーネントを不活性化してWriterの操作を終了する関数
+#
 
 def Stop():
     
@@ -817,8 +855,8 @@ def Stop():
 
 
 ##
-# コンポーネントの実行周期を設定する関数
-##
+# @brief コンポーネントの実行周期を設定する関数
+#
 
 def Set_Rate():
     pass
@@ -860,8 +898,8 @@ def Set_Rate():
 
 
 ##
-#RTCをマネージャに登録する関数
-##
+# @brief RTCをマネージャに登録する関数
+#
 def OOoWriterControlInit(manager):
   profile = OpenRTM_aist.Properties(defaults_str=ooowritercontrol_spec)
   manager.registerFactory(profile,
@@ -884,8 +922,8 @@ def MyModuleInit(manager):
           
 
 ##
-# RTC起動の関数
-##
+# @brief RTC起動の関数
+#
 
 def createOOoWriterComp():
                         
@@ -917,11 +955,11 @@ def createOOoWriterComp():
 
 
 ##
-# メッセージボックス表示の関数
-# title：ウインドウのタイトル
-# message：表示する文章
+# @brief メッセージボックス表示の関数
+# @param title ウインドウのタイトル
+# @param message 表示する文章
 # http://d.hatena.ne.jp/kakurasan/20100408/p1のソースコード(GPLv2)の一部
-##
+#
 
 def MyMsgBox(title, message):
     try:
@@ -932,9 +970,9 @@ def MyMsgBox(title, message):
 
 
 ##
-# OpenOfficeを操作するためのクラス
+# @brief OpenOfficeを操作するためのクラス
 # http://d.hatena.ne.jp/kakurasan/20100408/p1のソースコード(GPLv2)の一部
-##
+#
 
 class Bridge(object):
   def __init__(self):
@@ -953,9 +991,9 @@ class Bridge(object):
 
 
 ##
-# OpenOffice Writerを操作するためのクラス
+# @brief OpenOffice Writerを操作するためのクラス
 # http://d.hatena.ne.jp/kakurasan/20100408/p1のソースコード(GPLv2)の一部を改変
-##
+#
 
 class OOoWriter(Bridge):
   def __init__(self):
