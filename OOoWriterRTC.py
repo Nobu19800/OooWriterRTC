@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
+
+
 ##
+#   @file OOoWriterRTC.py
 #
-# @file OOoWriterRTC.py
 
 import optparse
 import sys,os,platform
@@ -262,6 +264,10 @@ def ResetCoding(m_str):
 #
 
 class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
+    ##
+    # @brief コンストラクタ
+    # @param manager
+    #
   def __init__(self, manager):
     OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
     
@@ -415,7 +421,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   ##
   # @brief 初期化処理用コールバック関数
   # @param self
-  #
+  # @return 
   def onInitialize(self):
     
     OOoRTC.writer_comp = self
@@ -669,7 +675,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @brief 活性化処理用コールバック関数
   # @param self
   # @param ec_id
-  #
+  # @return 
   
   def onActivated(self, ec_id):
     self.fontSize = float(self.conf_fontSize[0])
@@ -724,7 +730,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @brief 周期処理用コールバック関数
   # @param self
   # @param ec_id
-  #
+  # @return 
   
   def onExecute(self, ec_id):
     
@@ -827,7 +833,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @brief 終了処理用コールバック関数
   # @param self
   # @param ec_id
-  #
+  # @return 
   
   def on_shutdown(self, ec_id):
       OOoRTC.writer_comp = None
