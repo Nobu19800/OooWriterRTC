@@ -4,7 +4,7 @@
 
 ##
 #   @file OOoWriterRTC.py
-#
+#   @brief OOoWriterControl Component
 
 import optparse
 import sys,os,platform
@@ -161,7 +161,7 @@ class mWriter_i (Writer__POA.mWriter):
 
     ##
     # @brief コンストラクタ
-    # @param self
+    # @param self 
     # @param m_comp OOoWriterRTC
     #
     def __init__(self, m_comp):
@@ -169,7 +169,7 @@ class mWriter_i (Writer__POA.mWriter):
 
     ##
     # @brief 現在のカーソル位置X座標取得(単位はmm)
-    # @param self
+    # @param self 
     # @return カーソル位置X座標
     #
     def oCurrentCursorPositionX(self): 
@@ -181,7 +181,7 @@ class mWriter_i (Writer__POA.mWriter):
 
     ##
     # @brief 現在のカーソル位置Y座標取得(単位はmm)
-    # @param self
+    # @param self 
     # @return カーソル位置Y座標
     #
     def oCurrentCursorPositionY(self):
@@ -192,7 +192,7 @@ class mWriter_i (Writer__POA.mWriter):
 
     ##
     # @brief カーソルをドキュメント先頭に移動
-    # @param self
+    # @param self 
     # @param sel Trueなら移動範囲を選択
     #
     def gotoStart(self, sel):
@@ -204,7 +204,7 @@ class mWriter_i (Writer__POA.mWriter):
     
     ##
     # @brief カーソルをドキュメント最後尾に移動
-    # @param self
+    # @param self 
     # @param sel Trueなら移動範囲を選択
     #
     def gotoEnd(self, sel):
@@ -216,7 +216,7 @@ class mWriter_i (Writer__POA.mWriter):
     
     ##
     # @brief カーソルを行先頭に移動
-    # @param self
+    # @param self 
     # @param sel Trueなら移動範囲を選択
     #
     def gotoStartOfLine(self, sel):
@@ -228,7 +228,7 @@ class mWriter_i (Writer__POA.mWriter):
     
     ##
     # @brief カーソルを行最後尾に移動
-    # @param self
+    # @param self 
     # @param sel Trueなら移動範囲を選択
     #
     def gotoEndOfLine(self, sel):
@@ -266,7 +266,8 @@ def ResetCoding(m_str):
 class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
     ##
     # @brief コンストラクタ
-    # @param manager
+    # @param self 
+    # @param manager マネージャーオブジェクト
     #
   def __init__(self, manager):
     OpenRTM_aist.DataFlowComponentBase.__init__(self, manager)
@@ -391,7 +392,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 実行周期を設定する関数
-  # @param self
+  # @param self 
   # @param rate：実行周期
   #
   
@@ -401,7 +402,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 活性化するための関数
-  # @param self
+  # @param self 
   #
   def m_activate(self):
       m_ec = self.get_owned_contexts()
@@ -409,7 +410,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 不活性化するための関数
-  # @param self
+  # @param self 
   #
   def m_deactivate(self):
       m_ec = self.get_owned_contexts()
@@ -420,8 +421,8 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 初期化処理用コールバック関数
-  # @param self
-  # @return 
+  # @param self 
+  # @return RTC::ReturnCode_t
   def onInitialize(self):
     
     OOoRTC.writer_comp = self
@@ -476,7 +477,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 文字書き込みの関数
-  # @param self
+  # @param self 
   # @param m_str 書き込む文字列
   #
 
@@ -555,7 +556,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief カーソルの位置を取得する関数
-  # @param self
+  # @param self 
   # @return カーソル位置のX座標、Y座標(単位はmm)
   #
   def oCurrentCursorPosition(self):
@@ -565,7 +566,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief カーソルをドキュメントの先頭に移動させる関数
-  # @param self
+  # @param self 
   # @param sel Trueならば移動範囲を選択
   #
   def gotoStart(self, sel):
@@ -574,7 +575,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief カーソルをドキュメントの最後尾に移動させる関数
-  # @param self
+  # @param self 
   # @param sel Trueならば移動範囲を選択
   #
   def gotoEnd(self, sel):
@@ -583,7 +584,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief カーソルを行の先頭に移動させる関数
-  # @param self
+  # @param self 
   # @param sel Trueならば移動範囲を選択
   #
   def gotoStartOfLine(self, sel):
@@ -592,7 +593,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief カーソルの行の最後尾に移動させる関数
-  # @param self
+  # @param self 
   # @param sel Trueならば移動範囲を選択
   #
   def gotoEndOfLine(self, sel):
@@ -606,7 +607,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 文字数移動する関数
-  # @param self
+  # @param self 
   # @param diff 移動する文字数
   #
   def MoveCharacter(self, diff):
@@ -622,7 +623,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
           
   ##
   # @brief 単語数移動する関数
-  # @param self
+  # @param self 
   # @param diff 移動する単語数
   #
   def MoveWord(self, diff):
@@ -639,7 +640,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 行数移動する関数
-  # @param self
+  # @param self 
   # @param diff 移動する行数
   #
   def MoveLine(self, diff):
@@ -655,7 +656,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 段落数移動する関数
-  # @param self
+  # @param self 
   # @param diff 移動する段落数
   #
   def MoveParagraph(self, diff):
@@ -673,9 +674,9 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
   ##
   # @brief 活性化処理用コールバック関数
-  # @param self
-  # @param ec_id
-  # @return 
+  # @param self 
+  # @param ec_id target ExecutionContext Id
+  # @return RTC::ReturnCode_t
   
   def onActivated(self, ec_id):
     self.fontSize = float(self.conf_fontSize[0])
@@ -728,9 +729,9 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   
   ##
   # @brief 周期処理用コールバック関数
-  # @param self
-  # @param ec_id
-  # @return 
+  # @param self 
+  # @param ec_id target ExecutionContext Id
+  # @return RTC::ReturnCode_t
   
   def onExecute(self, ec_id):
     
@@ -831,9 +832,9 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   
   ##
   # @brief 終了処理用コールバック関数
-  # @param self
-  # @param ec_id
-  # @return 
+  # @param self 
+  # @param ec_id target ExecutionContext Id
+  # @return RTC::ReturnCode_t
   
   def on_shutdown(self, ec_id):
       OOoRTC.writer_comp = None
@@ -905,14 +906,16 @@ def Set_Rate():
 
 ##
 # @brief RTCをマネージャに登録する関数
-#
+# @param manager マネージャーオブジェクト
 def OOoWriterControlInit(manager):
   profile = OpenRTM_aist.Properties(defaults_str=ooowritercontrol_spec)
   manager.registerFactory(profile,
                           OOoWriterControl,
                           OpenRTM_aist.Delete)
 
-
+##
+# @brief
+# @param manager マネージャーオブジェクト
 def MyModuleInit(manager):
   manager._factory.unregisterObject(imp_id)
   OOoWriterControlInit(manager)
