@@ -938,12 +938,20 @@ def createOOoWriterComp():
                         
     
     if OOoRTC.mgr == None:
-      OOoRTC.mgr = OpenRTM_aist.Manager.init(['OOoWriter.py'])
-      OOoRTC.mgr.setModuleInitProc(MyModuleInit)
-      OOoRTC.mgr.activateManager()
-      OOoRTC.mgr.runManager(True)
+        if os.name == 'posix':
+            home = expanduser("~")
+            OOoRTC.mgr = OpenRTM_aist.Manager.init([os.path.abspath(__file__), '-f', home+'/rtc.conf'])
+        elif os.name == 'nt':
+            OOoRTC.mgr = OpenRTM_aist.Manager.init([os.path.abspath(__file__), '-f', '.\\rtc.conf'])
+        else:
+            return
+
+      
+        OOoRTC.mgr.setModuleInitProc(MyModuleInit)
+        OOoRTC.mgr.activateManager()
+        OOoRTC.mgr.runManager(True)
     else:
-      MyModuleInit(OOoRTC.mgr)
+        MyModuleInit(OOoRTC.mgr)
       
           
 
