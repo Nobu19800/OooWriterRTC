@@ -29,9 +29,6 @@ elif os.name == 'nt':
 
 
 
-import time
-import random
-import commands
 import RTC
 import OpenRTM_aist
 
@@ -148,7 +145,6 @@ ooowritercontrol_spec = ["implementation_id", imp_id,
                   "conf.__constraints__.Back_Blue", "0<=x<=255",
                   "conf.__constraints__.Back_Green", "0<=x<=255",
                   "conf.__constraints__.Code", "(utf-8,euc_jp,shift_jis)",
-    ""
                   ""]
 
 
@@ -396,7 +392,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @param rate：実行周期
   #
   
-  def m_setRate(self, rate):
+  def mSetRate(self, rate):
       m_ec = self.get_owned_contexts()
       m_ec[0].set_rate(rate)
 
@@ -404,7 +400,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @brief 活性化するための関数
   # @param self 
   #
-  def m_activate(self):
+  def mActivate(self):
       m_ec = self.get_owned_contexts()
       m_ec[0].activate_component(self._objref)
 
@@ -412,7 +408,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @brief 不活性化するための関数
   # @param self 
   #
-  def m_deactivate(self):
+  def mDeactivate(self):
       m_ec = self.get_owned_contexts()
       m_ec[0].deactivate_component(self._objref)
 
@@ -543,7 +539,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @return カーソル位置の文字列
   #
 
-  def GetWord(self):
+  def getWord(self):
       cursor = self.writer.document.getCurrentController().getViewCursor()
 
       try:
@@ -610,7 +606,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @param self 
   # @param diff 移動する文字数
   #
-  def MoveCharacter(self, diff):
+  def moveCharacter(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       if diff > 0:
           cursor.goRight(diff,self.MovementType)
@@ -626,7 +622,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @param self 
   # @param diff 移動する単語数
   #
-  def MoveWord(self, diff):
+  def moveWord(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       for i in range(0, diff):
           if diff > 0:
@@ -643,7 +639,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @param self 
   # @param diff 移動する行数
   #
-  def MoveLine(self, diff):
+  def moveLine(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       if diff > 0:
           cursor.goDown(diff,self.MovementType)
@@ -659,7 +655,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
   # @param self 
   # @param diff 移動する段落数
   #
-  def MoveParagraph(self, diff):
+  def moveParagraph(self, diff):
       cursor = self.writer.document.getCurrentController().getViewCursor()
       for i in range(0, diff):
           if diff > 0:
@@ -746,19 +742,19 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
     if self._m_wsCharacterIn.isNew():
         data = self._m_wsCharacterIn.read()
-        self.MoveCharacter(data.data)
+        self.moveCharacter(data.data)
 
     if self._m_wsWordIn.isNew():
         data = self._m_wsWordIn.read()
-        self.MoveWord(data.data)
+        self.moveWord(data.data)
 
     if self._m_wsLineIn.isNew():
         data = self._m_wsLineIn.read()
-        self.MoveLine(data.data)
+        self.moveLine(data.data)
 
     if self._m_wsParagraphIn.isNew():
         data = self._m_wsParagraphIn.read()
-        self.MoveParagraph(data.data)
+        self.moveParagraph(data.data)
 
     if self._m_wsWindowIn.isNew():
         data = self._m_wsWindowIn.read()
@@ -823,7 +819,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 
 
     OpenRTM_aist.setTimestamp(self._d_m_selWord)
-    self._d_m_selWord.data = str(self.GetWord())
+    self._d_m_selWord.data = str(self.getWord())
     self._m_selWordOut.write()
         
 
@@ -849,7 +845,7 @@ class OOoWriterControl(OpenRTM_aist.DataFlowComponentBase):
 def Start():
     
     if OOoRTC.writer_comp:
-        OOoRTC.writer_comp.m_activate()
+        OOoRTC.writer_comp.mActivate()
 
 ##
 # @brief コンポーネントを不活性化してWriterの操作を終了する関数
@@ -858,7 +854,7 @@ def Start():
 def Stop():
     
     if OOoRTC.writer_comp:
-        OOoRTC.writer_comp.m_deactivate()
+        OOoRTC.writer_comp.mDeactivate()
 
 
 ##
@@ -885,7 +881,7 @@ def Set_Rate():
             except:
                return
               
-            OOoRTC.draw_comp.m_setRate(text)"""
+            OOoRTC.draw_comp.mSetRate(text)"""
       
       
 
@@ -935,7 +931,9 @@ def MyModuleInit(manager):
 #
 
 def createOOoWriterComp():
-                        
+    if OOoRTC.writer_comp:
+        MyMsgBox('',OOoRTC.SetCoding('RTCは起動済みです','utf-8'))
+        return                    
     
     if OOoRTC.mgr == None:
         if os.name == 'posix':
