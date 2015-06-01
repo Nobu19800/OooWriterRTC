@@ -445,11 +445,11 @@ class OOoWriterControl(WriterControl):
   ##
   # @brief 終了処理用コールバック関数
   # @param self 
-  # @param ec_id target ExecutionContext Id
+  # @param 
   # @return RTC::ReturnCode_t
   
-  def on_shutdown(self, ec_id):
-      WriterControl.on_shutdown(self, ec_id)
+  def onFinalize(self):
+      WriterControl.onFinalize(self)
       OOoRTC.writer_comp = None
       return RTC.RTC_OK
 
